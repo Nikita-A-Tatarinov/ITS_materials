@@ -1,0 +1,30 @@
+<form action="{% url 'automations:ontology_term_extractor' %}" method="post">
+    <div>
+        <button type="submit" name="submit_action" value="back_to_admin">Go back to admin page</button>
+    </div>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div>
+        <button type="submit" name="submit_action" value="extract_terms">Extract terms</button>
+    </div>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li>
+            {{ message }}
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</form>
+
+<script>
+    window.onload = function() {
+        var firstField = document.getElementById('id_ontology_tag');
+        var secondField = document.getElementById('id_ontology_topic_tag');
+
+        firstField.onchange = function() {
+            this.form.submit();
+        };
+    };
+</script>

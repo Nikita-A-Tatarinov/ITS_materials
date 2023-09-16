@@ -1,0 +1,67 @@
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+
+</style>
+<form action="{% url 'automations:classified_occurrence_view' %}" method="post">
+    {% csrf_token %}
+    <table>
+        <thead>
+        <tr>
+            <th>Snippet</th>
+            <th>Type</th>
+            <th>Ontology term</th>
+            <th>Distinction ontology term</th>
+            <th>Relevance</th>
+            <th>Approved</th>
+            <th>Default for section</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in page_obj %}
+        <tr>
+            <td>{{ item.snippet }}</td>
+            <td>{{ item.occurrence_type }}</td>
+            <td>{{ item.occurrence.ontology_term.term }}</td>
+            <td>{{ item.distinction_ontology_term }}</td>
+            <td>{{ item.relevance }}</td>
+            <td>
+                <input type="checkbox" name="is_approved" value="{{ item.occurrence.id }}"
+                       {% if item.is_approved %}checked{% endif %}>
+            </td>
+            <td>
+                <input type="checkbox" name="default_for_section" value="{{ item.occurrence.id }}"
+                       {% if item.default_for_section %}checked{% endif %}>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <input type="hidden" name="cur_page_num" value="{{ page_obj.number }}">
+    <button type="submit">Submit</button>
+</form>
+
+<div class="pagination">
+    {% if page_obj.has_previous %}
+    <a href="?page={{ page_obj.previous_page_number }}">Prev</a>
+    {% endif %}
+
+    <span class="current-page">{{ page_obj.number }}</span>
+
+    {% if page_obj.has_next %}
+    <a href="?page={{ page_obj.next_page_number }}">Next</a>
+    {% endif %}
+</div>

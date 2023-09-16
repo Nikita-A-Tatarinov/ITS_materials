@@ -1,0 +1,19 @@
+<form action="{% url 'automations:occurrence_extractor' %}" method="post">
+    <div>
+        <button type="submit" name="submit_action" value="back_to_admin">Go back to admin page</button>
+    </div>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <div>
+        <button type="submit" name="submit_action" value="extract_occurrences">Extract occurrences</button>
+    </div>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li>
+            {{ message }}
+        </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</form>
